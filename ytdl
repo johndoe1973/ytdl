@@ -1,0 +1,60 @@
+#!/bin/bash
+
+
+#A shell wrapper script for youtube-dl to make downloading easier and with additional functionalities
+#Copy script to usr/local/bin
+#change chmod to 777 for the script
+#Usage
+#ytdl -yt https://www.youtube.com/watch?v=lRJuGRNQMVA
+
+#arguments
+#youtube = yt
+#coursera = cs
+#write subtitles = sub
+#skip downloading the video = skip
+#audio only = audio
+#
+
+
+
+pagetype=  #From which webpage is video being downloaded - youtube, coursera, udemy
+link=      #Video link
+writesub=0 #Write sub is by default false
+skipdwn=0  #Skip download is by default false
+audio=0    #Audio only by default false
+
+commmand="youtube-dl --no-check-certificate"
+
+while [ "$1" != "" ]; do
+  case $1 in
+    -yt | --youtube )       pagetype="yt"
+      ;;
+    -cs | --coursera )      pagetype="cs"
+      ;;
+    -sub | --writesub )     writesub=1
+      ;;
+    -skip | --skip-download ) skipdwn=1
+      ;;
+    -audio | --audio-only ) audio=1
+      ;;
+    * )                     link=$1
+      ;;
+  esac
+  shift
+done
+
+
+case $pagetype in
+  "yt" )   if [[ writesub -eq 0 ]]; then
+      youtube-dl --no-check-certificate -f ‘bestvideo+bestaudio’ -o '%(title)s.%(ext)s' $link
+    elif [[ writesub -eq 1 ]]; then
+      if [[ skipdwn -eq 0 ]]; then
+        youtube-dl --no-check-certificate -f ‘bestvideo+bestaudio’ --write-sub -o '%(title)s.%(ext)s' $link
+      else
+        youtube-dl --no-check-certificate --write-sub --skip-download -o '%(title)s.%(ext)s' $link
+      fi
+    fi
+    ;;
+esac
+
+exit 0
