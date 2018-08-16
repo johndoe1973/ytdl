@@ -23,7 +23,7 @@ writesub=0 #Write sub is by default false
 skipdwn=0  #Skip download is by default false
 audio=0    #Audio only by default false
 
-commmand="youtube-dl --no-check-certificate"
+#commmand="youtube-dl --no-check-certificate"
 
 while [ "$1" != "" ]; do
   case $1 in
